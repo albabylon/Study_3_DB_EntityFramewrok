@@ -1,4 +1,6 @@
-﻿namespace EF_DB_Library;
+﻿using EF_DB_Library.Repository;
+
+namespace EF_DB_Library;
 
 static class Program
 {
@@ -6,7 +8,9 @@ static class Program
     {
         using (var db = new AppContext())
         {
-            var bookrep = new BookRepository(db);
+            var bookRepos = new BookRepository(db);
+
+            var userRepos = new UserRepository(db);
         }
     }
 }

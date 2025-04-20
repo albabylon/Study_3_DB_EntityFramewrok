@@ -32,6 +32,7 @@ namespace EF_DB_Library.Repository
         protected void Delete(TEntity entity)
         {
             dbSet.Remove(entity);
+            context.SaveChanges();
         }
     }
 }

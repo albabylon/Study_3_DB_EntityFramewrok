@@ -11,6 +11,7 @@ namespace EF_DB_Library
         
         public AppContext()
         {
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EFPractices.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace EF_DB_Library
 {
@@ -8,8 +9,21 @@ namespace EF_DB_Library
         // Объекты таблицы Users
         public DbSet<User> Users { get; set; }
 
+        // Объекты таблицы Companies
+        //public DbSet<Company> Companies { get; set; }
+
+        // Объекты таблицы UserCredentials
+        //public DbSet<UserCredential> UserCredentials { get; set; }
+
+        // Объекты таблицы Topics
+        public DbSet<Topic> Topics { get; set; }
+
         public AppContext()
         {
+            //Так как изменили модель, мы не сможем просто так соотнести старые таблицы,
+            //которые уже были в БД, с новыми моделями.
+            //Для этого мы добавили строку для удаления БД при запуске приложения
+            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 

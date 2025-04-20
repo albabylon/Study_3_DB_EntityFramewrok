@@ -1,17 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EF_DB_Library.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace EF_DB_Library.Repository
 {
-    public class UserRepository<TEntity, TKey> : BaseRepository<TEntity, TKey> where TEntity : class
+    public class UserRepository : BaseRepository<Book, int>
     {
         public UserRepository(DbContext context) : base(context)
         {
 
         }
 
-        public void UpdateName<T>(int id)
+        public void UpdateName(int userId, string userName)
         {
-            using var db = new AppContext();
+            var book = dbSet.FirstOrDefault(x => x.Id == userId);
+            if (book != null)
+                book.Name = userName;
+            context.SaveChanges();
         }
     }
 }

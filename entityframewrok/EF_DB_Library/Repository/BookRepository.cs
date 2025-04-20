@@ -3,16 +3,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EF_DB_Library.Repository
 {
-    public class BookRepository<TEntity, TKey> : BaseRepository<TEntity, TKey> where TEntity : class
+    public class BookRepository : BaseRepository<Book, int>
     {
         public BookRepository(DbContext context) : base(context)
         {
 
         }
 
-        public void UpdateReleaseYear(Book book)
+        public void UpdateReleaseYear(int userId, DateTime dateTime)
         {
-            dbSet.Where(predicate).Update(entity);
+            var book = dbSet.FirstOrDefault(x => x.Id == userId);
+            if (book != null)
+                book.ReleaseYear = dateTime;
             context.SaveChanges();
         }
     }
