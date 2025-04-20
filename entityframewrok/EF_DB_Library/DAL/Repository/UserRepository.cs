@@ -1,9 +1,9 @@
-﻿using EF_DB_Library.Entities;
+﻿using EF_DB_Library.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace EF_DB_Library.Repository
+namespace EF_DB_Library.DAL.Repository
 {
-    public class UserRepository : BaseRepository<Book, int>
+    public class UserRepository : BaseRepository<User, int>
     {
         public UserRepository(DbContext context) : base(context)
         {
@@ -16,6 +16,11 @@ namespace EF_DB_Library.Repository
             if (book != null)
                 book.Name = userName;
             context.SaveChanges();
+        }
+
+        public void GetBook(int userId, string userName)
+        {
+
         }
     }
 }

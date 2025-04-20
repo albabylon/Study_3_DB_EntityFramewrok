@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace EF_DB_Library.Repository
+namespace EF_DB_Library.DAL.Repository
 {
     public class BaseRepository<TEntity, TKey> where TEntity : class
     {
@@ -13,23 +13,24 @@ namespace EF_DB_Library.Repository
             dbSet = context.Set<TEntity>();
         }
 
-        protected TEntity SelectById(TKey id)
+        public TEntity SelectById(TKey id)
         {
             return dbSet.Find(id);
         }
 
-        protected IEnumerable<TEntity> SelectAll(TEntity table)
+        public IEnumerable<TEntity> SelectAll(TEntity table)
         {
             return dbSet.ToList();
         }
 
-        protected void Add(TEntity entity)
+        public TEntity Add(TEntity entity)
         {
             dbSet.Add(entity);
             context.SaveChanges();
+            return entity;
         }
 
-        protected void Delete(TEntity entity)
+        public void Delete(TEntity entity)
         {
             dbSet.Remove(entity);
             context.SaveChanges();

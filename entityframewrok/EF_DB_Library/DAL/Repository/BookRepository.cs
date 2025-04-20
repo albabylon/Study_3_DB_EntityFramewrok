@@ -1,7 +1,7 @@
-﻿using EF_DB_Library.Entities;
+﻿using EF_DB_Library.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace EF_DB_Library.Repository
+namespace EF_DB_Library.DAL.Repository
 {
     public class BookRepository : BaseRepository<Book, int>
     {

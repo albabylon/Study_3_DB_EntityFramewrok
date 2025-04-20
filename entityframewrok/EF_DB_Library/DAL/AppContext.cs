@@ -1,17 +1,19 @@
-﻿using EF_DB_Library.Entities;
+﻿using EF_DB_Library.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace EF_DB_Library
+namespace EF_DB_Library.DAL
 {
     public class AppContext : DbContext
     {
         public DbSet<User> Users { get; set; }
-        
+
         public DbSet<Book> Books { get; set; }
-        
+
+        public DbSet<Author> Authors { get; set; }
+
         public AppContext()
         {
-            //Database.EnsureDeleted();
+            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
