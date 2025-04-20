@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "entityframewrok", "entityframewrok\entityframewrok.csproj", "{479EAE39-055C-466C-9254-ADB97E90D89D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFPractices", "EFPractices\EFPractices.csproj", "{3045BD30-2A15-4C64-98F4-0754EFEA9711}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EF_DB_Library", "EF_DB_Library\EF_DB_Library.csproj", "{5D54D812-79F9-4BE7-966C-6B38F6314C32}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{479EAE39-055C-466C-9254-ADB97E90D89D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{479EAE39-055C-466C-9254-ADB97E90D89D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{479EAE39-055C-466C-9254-ADB97E90D89D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{479EAE39-055C-466C-9254-ADB97E90D89D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3045BD30-2A15-4C64-98F4-0754EFEA9711}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3045BD30-2A15-4C64-98F4-0754EFEA9711}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3045BD30-2A15-4C64-98F4-0754EFEA9711}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3045BD30-2A15-4C64-98F4-0754EFEA9711}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D54D812-79F9-4BE7-966C-6B38F6314C32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D54D812-79F9-4BE7-966C-6B38F6314C32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D54D812-79F9-4BE7-966C-6B38F6314C32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D54D812-79F9-4BE7-966C-6B38F6314C32}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
