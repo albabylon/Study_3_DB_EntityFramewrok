@@ -1,25 +1,37 @@
-﻿namespace EF_DB_Library.Repository
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace EF_DB_Library.Repository
 {
-    public class BaseRepository
-    {        
-        protected T SelectById<T>(int id)
+    public class BaseRepository<TEntity, TKey> where TEntity : class
+    {
+        protected readonly DbContext context;
+        protected readonly DbSet<TEntity> dbSet;
+
+        public BaseRepository(DbContext context)
         {
-            using var db = new AppContext();
+            this.context = context;
+            dbSet = context.Set<TEntity>();
         }
 
-        protected IEnumerable<T> SelectAll<T>(T table)
+        protected TEntity SelectById(TKey id)
         {
-            using var db = new AppContext();
+            return dbSet.Find(id);
         }
 
-        protected void Add<T>()
+        protected IEnumerable<TEntity> SelectAll(TEntity table)
         {
-            using var db = new AppContext();
+            return dbSet.ToList();
         }
 
-        protected void Delete<T>()
+        protected void Add(TEntity entity)
         {
-            using var db = new AppContext();
+            dbSet.Add(entity);
+            context.SaveChanges();
+        }
+
+        protected void Delete(TEntity entity)
+        {
+            dbSet.Remove(entity);
         }
     }
 }

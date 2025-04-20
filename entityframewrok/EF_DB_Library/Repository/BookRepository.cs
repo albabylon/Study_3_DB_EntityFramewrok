@@ -1,10 +1,19 @@
-﻿namespace EF_DB_Library.Repository
+﻿using EF_DB_Library.Entities;
+using Microsoft.EntityFrameworkCore;
+
+namespace EF_DB_Library.Repository
 {
-    public class BookRepository
+    public class BookRepository<TEntity, TKey> : BaseRepository<TEntity, TKey> where TEntity : class
     {
-        public void UpdateReleaseYear<T>(int id)
+        public BookRepository(DbContext context) : base(context)
         {
-            using var db = new AppContext();
+
+        }
+
+        public void UpdateReleaseYear(Book book)
+        {
+            dbSet.Where(predicate).Update(entity);
+            context.SaveChanges();
         }
     }
 }

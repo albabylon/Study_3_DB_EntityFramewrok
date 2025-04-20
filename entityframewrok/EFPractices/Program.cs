@@ -1,6 +1,4 @@
-﻿
-
-namespace EF_DB_Library;
+﻿namespace EF_DB_Library;
 static class Program
 {
     static void Main (string[] args)
