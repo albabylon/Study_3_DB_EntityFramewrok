@@ -2,38 +2,38 @@
 
 namespace EF_DB_Library.DAL.Repository
 {
-    public class BaseRepository<TEntity, TKey> where TEntity : class
+    public abstract class BaseRepository<TEntity, TKey> where TEntity : class
     {
         protected readonly DbContext context;
         protected readonly DbSet<TEntity> dbSet;
 
-        public BaseRepository(DbContext context)
+        protected BaseRepository(DbContext context)
         {
             this.context = context;
             dbSet = context.Set<TEntity>();
         }
 
-        public TEntity SelectById(TKey id)
+        public virtual async Task<TEntity> SelectById(TKey id)
         {
-            return dbSet.Find(id);
+            return await dbSet.FindAsync(id);
         }
 
-        public IEnumerable<TEntity> SelectAll(TEntity table)
+        public virtual async Task<IEnumerable<TEntity>> SelectAll()
         {
-            return dbSet.ToList();
+            return await dbSet.ToListAsync();
         }
 
-        public TEntity Add(TEntity entity)
+        public virtual async Task<TEntity> Add(TEntity entity)
         {
-            dbSet.Add(entity);
-            context.SaveChanges();
+            await dbSet.AddAsync(entity);
+            await context.SaveChangesAsync();
             return entity;
         }
 
-        public void Delete(TEntity entity)
+        public virtual async Task Delete(TEntity entity)
         {
             dbSet.Remove(entity);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
     }
 }

@@ -13,7 +13,7 @@ namespace EF_DB_Library.DAL
 
         public AppContext()
         {
-            Database.EnsureDeleted();
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 

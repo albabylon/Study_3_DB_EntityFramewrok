@@ -10,17 +10,23 @@ namespace EF_DB_Library.DAL.Repository
 
         }
 
-        public void UpdateName(int userId, string userName)
+        public async Task UpdateName(int userId, string userName)
         {
-            var book = dbSet.FirstOrDefault(x => x.Id == userId);
-            if (book != null)
-                book.Name = userName;
-            context.SaveChanges();
+            var user = await dbSet.FirstOrDefaultAsync(x => x.Id == userId);
+            if (user != null)
+                user.Name = userName;
+            await context.SaveChangesAsync();
         }
 
-        public void GetBook(int userId, string userName)
+        public async Task GetBook(int userId, string bookName, IEnumerable<Book> enableBooks)
         {
+            var book = enableBooks.FirstOrDefault(b => b.Name == bookName) ??
+                throw new Exception("Книга не найдена!");
 
+            var user = await dbSet.FirstOrDefaultAsync(u => u.Id == userId) ??
+                throw new Exception("Юзер не найдена!");
+
+            user.Books.Add(book);
         }
     }
 }

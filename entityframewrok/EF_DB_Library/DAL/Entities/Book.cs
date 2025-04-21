@@ -1,4 +1,6 @@
-﻿namespace EF_DB_Library.DAL.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace EF_DB_Library.DAL.Entities
 {
     public class Book
     {
