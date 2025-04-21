@@ -10,7 +10,7 @@
         public string Role { get; set; }
 
         // Навигационное свойство
-        //public UserCredential UserCredential { get; set; }
+        public UserCredential UserCredential { get; set; }
 
         // Навигационное свойство
         public List<Topic> Topics { get; set; } = new List<Topic>();
@@ -20,9 +20,9 @@
         //Но явное указание данных свойств позволяет работать со связью объектов в обе стороны, поэтому советуем оставлять их.
 
         // Внешний ключ
-        //public int CompanyId { get; set; }
+        public int CompanyId { get; set; }
 
         // Навигационное свойство
-        //public Company Company { get; set; }
+        public Company Company { get; set; }
     }
 }

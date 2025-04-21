@@ -1,4 +1,5 @@
 ﻿using EFPractices.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace EF_DB_Library;
 static class Program
@@ -126,30 +127,117 @@ static class Program
             #endregion
 
             #region Многие ко многим
-            //Многие ко многим
-            //Когда обе сущности ссылаются на коллекцию объектов другой сущности.
-            //Пример: пользователь и его роли. У каждого пользователя может быть множество ролей, и каждая роль может принадлежать множеству пользователей.
-            //Или пример: в схеме сущность User — пользователь, и сущность Topic — раздел
+            ////Многие ко многим
+            ////Когда обе сущности ссылаются на коллекцию объектов другой сущности.
+            ////Пример: пользователь и его роли. У каждого пользователя может быть множество ролей, и каждая роль может принадлежать множеству пользователей.
+            ////Или пример: в схеме сущность User — пользователь, и сущность Topic — раздел
 
-            //EF (EF Core) с версии 5.0 позволяет не заботиться о создании связующей таблицы, а разрешает это сам. - НЕ НУЖНА ПРОМЕЖУТОЧНАЯ ТАБЛИЦА
+            ////EF (EF Core) с версии 5.0 позволяет не заботиться о создании связующей таблицы, а разрешает это сам. - НЕ НУЖНА ПРОМЕЖУТОЧНАЯ ТАБЛИЦА
 
-            var topic1 = new Topic { Name = "T1" };
-            var topic2 = new Topic { Name = "T2" };
-            var topic3 = new Topic { Name = "T3" };
+            //var topic1 = new Topic { Name = "T1" };
+            //var topic2 = new Topic { Name = "T2" };
+            //var topic3 = new Topic { Name = "T3" };
 
-            var user1 = new User { Name = "Arthur", Role = "Admin", Email = "" };
-            var user2 = new User { Name = "Bob", Role = "Admin", Email = "" };
-            var user3 = new User { Name = "Clark", Role = "User", Email = "" };
+            //var user1 = new User { Name = "Arthur", Role = "Admin", Email = "" };
+            //var user2 = new User { Name = "Bob", Role = "Admin", Email = "" };
+            //var user3 = new User { Name = "Clark", Role = "User", Email = "" };
 
-            topic1.Users.AddRange(new[] { user1, user2 });
-            topic2.Users.AddRange(new[] { user1 });
-            topic3.Users.AddRange(new[] { user1, user2, user3 });
+            //topic1.Users.AddRange(new[] { user1, user2 });
+            //topic2.Users.AddRange(new[] { user1 });
+            //topic3.Users.AddRange(new[] { user1, user2, user3 });
 
-            db.Topics.AddRange(new[] { topic1, topic2, topic3 });
-            db.Users.AddRange(new[] { user1, user2, user3 } );
-            
-            db.SaveChanges();
+            //db.Topics.AddRange(new[] { topic1, topic2, topic3 });
+            //db.Users.AddRange(new[] { user1, user2, user3 } );
 
+            //db.SaveChanges();
+
+            #endregion
+
+            #region LINQ
+            ////Для взаимодействия с источником данных EF использует технологию LINQ to Entities.
+            ////EF транслирует их в определенные запросы, понятные для используемого источника данных
+            //// Создаем контекст для выбора данных
+
+            //var usersQuery =
+            //    from user in db.Users
+            //    where user.CompanyId == 2
+            //    select user;
+            ////ИЛИ через методы расширения
+            //usersQuery = db.Users.Where(u => u.CompanyId == 2);
+
+            ////Важно, что при таких запросах мы получаем данные только из таблицы пользователей,
+            ////а значит, свойство Company для полученных пользователей будет равно null.
+            ////Для того чтобы включить данные и по компании в запрос, следует уточнить таблицу с помощью Include:
+
+            //usersQuery =
+            //    from user in db.Users.Include(u => u.Company)
+            //    where user.CompanyId == 2
+            //    select user;
+            ////ИЛИ
+            //usersQuery = db.Users.Include(u => u.Company).Where(u => u.CompanyId == 2);
+
+            ////Поскольку мы выбираем данные по связанным компаниям, мы можем преобразовать запрос:
+            //usersQuery = db.Users.Include(u => u.Company).Where(u => u.Company.Id == 2);
+            ////ИЛИ
+            //usersQuery = db.Users.Include(u => u.Company).Where(u => u.Company.Name == "VK");
+
+            //var users = usersQuery.ToList();
+
+            //foreach (var user in users)
+            //{
+            //    // Вывод Id пользователей
+            //    Console.WriteLine(user.Id);
+            //}
+
+
+            //var userCompany = db.Users.Select(v => v.Company);
+
+            //var firstUser = db.Users.First();
+
+            //var joinedCompanies = db.Users.Join(db.Companies, c => c.CompanyId, p => p.Id, (p, c) => new { CompanyName = c.Name });
+
+            //var sumCompanies = db.Users.Sum(v => v.CompanyId);
+            #endregion
+
+            #region IQueryable<T>
+            //При вызове методов LINQ запрос формируется, но не отправляется в БД.
+            //Его непосредственное выполнение происходит, когда мы начинаем использовать данные, являющиеся результатом данного запроса:
+            //при переборе результата запроса в цикле или при применении к нему методов ToList или ToArray,
+            //а также если запрос представляет скалярное значение, например Count, Sum.
+
+            //Сравним работу двух интерфейсов: IQuaryable и IEnumerable
+
+            //IEnumerable
+            //Объект IEnumerable представляет набор данных в памяти и может перемещаться по этим данным только вперед.
+            //Запрос, представленный объектом IEnumerable, выполняется немедленно и полностью, поэтому получение данных приложением происходит быстро.
+            //При выполнении запроса IEnumerable загружает все данные, и если нам надо выполнить их фильтрацию, то сама фильтрация происходит на стороне клиента.
+
+            //IQuaryable
+            //Объект IQueryable предоставляет удаленный доступ к базе данных и позволяет перемещаться по данным как в прямом порядке от начала до конца,
+            //так и в обратном порядке. В процессе создания запроса, возвращаемым объектом которого является IQueryable,
+            //происходит оптимизация запроса. В итоге в процессе его выполнения тратится меньше памяти, меньше пропускной способности сети,
+            //но в то же время он может обрабатываться чуть медленнее, чем запрос, возвращающий объект IEnumerable.
+
+            var query1 = db.Users
+                .ToList()                       // Выполняет запрос
+                .Where(u => u.Role == "Admin"); // Фильтрует
+
+            var query2 = db.Users
+                .Where(u => u.Role == "Admin")  // Фильтрует
+                .ToList();                      // Выполняет запрос
+
+
+            //query1 - Все данные с помощью запроса:
+            //SELECT * FROM dbo.Users
+            //Данные о всех 4-х пользователях были переданы из базы и после этого отфильтрованы на стороне сервера
+
+            //query2 - фильтрация происходила на стороне БД за счет исполнения другого SQL-запроса:
+            //SELECT * FROM dbo.Users u WHERE u.Role = 'Admin'
+
+            //Таким образом, при работе с EF важно понимать, когда выполнится ваш запрос, и что будет запрошено из БД.
+            //Это может сэкономить время за счёт сокращения времени выполнения запроса, но если в приложении нужен доступ ко всем данным,
+            //то стоит выгружать их в память сразу. Аналогично фильтрации, следует следить и за другими запросами,
+            //например не загружать из БД поля, которые не пригодятся, а формировать только нужный объект с помощью Select.
             #endregion
         }
 
