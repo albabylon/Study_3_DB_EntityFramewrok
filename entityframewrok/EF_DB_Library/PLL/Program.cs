@@ -12,13 +12,39 @@ static class Program
             var authorRepos = new AuthorRepository(db);
             var bookRepos = new BookRepository(db);
 
+            //добавление данных
             //await CreateData(userRepos, authorRepos, bookRepos);
 
-            var books = await bookRepos.SelectAll();
+            //добавление юзеру в коллецию книг
+            //var books = await bookRepos.SelectAll();
+            //await userRepos.GetBook(5, "Книга 4", books);
 
-            await userRepos.GetBook(5, "Книга 4", books);
-
+            //методы linq
+            var booksBetweenYears = await bookRepos.SelectBooksByGenreBetweenYears("Детектив", new DateTime(1960, 01, 01), new DateTime(2025, 01, 01));
+            var booksCountByAuthor = await bookRepos.CountBooksByAuthor("Автор 2");
+            var booksCountByGenre = await bookRepos.CountBooksByGenre("Детектив");
+            var isBookThisAuthorThisName = await bookRepos.IsBookThisAuthorThisName("Автор 1", "Книга 1");
+            var isBookInBookCollection = await userRepos.IsBookInBookCollection(5, "Книга 4");
+            var countBooksInCollection = await userRepos.CountBooksInCollection(5);
+            var lastRealeseBook = await bookRepos.LastRealeseBook();
+            var selectOrderByName = await bookRepos.SelectOrderByName();
+            var selectOrderByDescName = await bookRepos.SelectOrderByDescName();
             await db.SaveChangesAsync();
+
+            //вывод
+            foreach (var book in booksBetweenYears)
+                Console.WriteLine(book.Name);
+            Console.WriteLine(booksCountByAuthor.ToString());
+            Console.WriteLine(booksCountByGenre.ToString());
+            Console.WriteLine(isBookThisAuthorThisName.ToString());
+            Console.WriteLine(isBookInBookCollection.ToString());
+            Console.WriteLine(countBooksInCollection.ToString());
+            Console.WriteLine(lastRealeseBook.Name.ToString());
+            foreach (var book in selectOrderByName)
+                Console.WriteLine(book.Name);
+            foreach (var book in selectOrderByDescName)
+                Console.WriteLine(book.Name);
+            Console.ReadLine();
         }
     }
 

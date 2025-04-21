@@ -18,7 +18,7 @@ namespace EF_DB_Library.DAL.Repository
             await context.SaveChangesAsync();
         }
 
-        public async Task GetBook(int userId, string bookName, IEnumerable<Book> enableBooks)
+        public async Task AddBookInCollection(int userId, string bookName, IEnumerable<Book> enableBooks)
         {
             var book = enableBooks.FirstOrDefault(b => b.Name == bookName) ??
                 throw new Exception("Книга не найдена!");
@@ -27,6 +27,24 @@ namespace EF_DB_Library.DAL.Repository
                 throw new Exception("Юзер не найдена!");
 
             user.Books.Add(book);
+        }
+
+        public async Task<bool> IsBookInBookCollection(int userId, string bookName)
+        {
+            var user = await dbSet
+                .Include(b => b.Books)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            return user is null ? throw new Exception("Юзер не найден") : user.Books.Any(b => b.Name == bookName);
+        }
+
+        public async Task<int> CountBooksInCollection(int userId)
+        {
+            var users = await dbSet
+                .Include(b => b.Books)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            return users.Books.Count;
         }
     }
 }
